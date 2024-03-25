@@ -1,1 +1,14 @@
+body {
+  display: flex;
+  gap: 50px;
+}
 
+.board {
+  display: grid;
+  grid-template-columns: repeat(10, 50px);
+  grid-template-rows: repeat(10, 50px);
+}
+
+.ship {
+  border: 2px solid aqua;
+}

@@ -59,7 +59,7 @@ describe('Gameboard', () => {
 
   test('receiveAttack() should record missed coordinates', () => {
     gameboard.receiveAttack([0, 0]);
-    expect(gameboard.missedAttacks).toContain([0, 0]);
+    expect(gameboard.missedAttacks).toContainEqual([0, 0]);
   });
 
   test('should report whether all ships have been sunk', () => {

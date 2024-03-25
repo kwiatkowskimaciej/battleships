@@ -32,6 +32,7 @@ function GameController(
   const playRound = (coordinates) => {
     try {
       activePlayer.attack(coordinates);
+      console.log('Attacking at ' + coordinates);
       switchPlayerTurn();
     } catch (error) {
       console.error(error.message);
@@ -83,6 +84,19 @@ function ScreenController() {
       });
     });
   };
+
+  function boardClickHandler(e) {
+    const x = Number(e.target.dataset.x);
+    const y = Number(e.target.dataset.y);
+
+    if (!x || !y) return;
+
+    game.playRound([x, y]);
+    updateScreen();
+  }
+
+  gameboardOneElement.addEventListener('click', boardClickHandler);
+  gameboardTwoElement.addEventListener('click', boardClickHandler);
 
   updateScreen();
 }

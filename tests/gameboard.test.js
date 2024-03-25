@@ -38,16 +38,16 @@ describe('Gameboard', () => {
 
   test('should not allow ships to be placed less than one block from each other', () => {
     const ship1 = new Ship(1);
-    const ship2 = new Ship(2);
-    gameboard.placeShip(ship1[(1, 1)]);
-    expect(() => gameboard.placeShip(ship2, [1, 0])).toThrow();
-    expect(() => gameboard.placeShip(ship2, [2, 1])).toThrow();
-    expect(() => gameboard.placeShip(ship2, [1, 2])).toThrow();
-    expect(() => gameboard.placeShip(ship2, [0, 1])).toThrow();
-    expect(() => gameboard.placeShip(ship2, [0, 0])).toThrow();
-    expect(() => gameboard.placeShip(ship2, [2, 0])).toThrow();
-    expect(() => gameboard.placeShip(ship2, [2, 2])).toThrow();
-    expect(() => gameboard.placeShip(ship2, [0, 2])).toThrow();
+    const ship2 = new Ship(1);
+    gameboard.placeShip(ship1, [1, 1]);
+    expect(() => gameboard.placeShip(ship2, [1, 0], 'horizontal')).toThrow();
+    expect(() => gameboard.placeShip(ship2, [2, 1], 'horizontal')).toThrow();
+    expect(() => gameboard.placeShip(ship2, [1, 2], 'horizontal')).toThrow();
+    expect(() => gameboard.placeShip(ship2, [0, 1], 'horizontal')).toThrow();
+    expect(() => gameboard.placeShip(ship2, [0, 0], 'horizontal')).toThrow();
+    expect(() => gameboard.placeShip(ship2, [2, 0], 'horizontal')).toThrow();
+    expect(() => gameboard.placeShip(ship2, [2, 2], 'horizontal')).toThrow();
+    expect(() => gameboard.placeShip(ship2, [0, 2], 'horizontal')).toThrow();
   });
 
   test('receiveAttack() should record hit coordinates', () => {

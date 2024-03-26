@@ -12,3 +12,7 @@ body {
 .ship {
   border: 2px solid aqua;
 }
+
+.miss {
+  background-color: violet;
+}

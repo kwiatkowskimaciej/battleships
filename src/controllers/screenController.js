@@ -8,26 +8,26 @@ function ScreenController() {
   const gameboardRightElement = document.querySelector('.gameboardRight');
   const activePlayerElement = document.querySelector('.activePlayer');
 
-  const displayAttackResult = (gameboard, coordinates, button) => {
+  const displayAttackResult = (gameboard, coordinates, element) => {
     const attackResult = gameboard.getAttackResult(coordinates);
-    if (attackResult) button.classList.add(attackResult);
+    if (attackResult) element.classList.add(attackResult);
   };
 
   const displayGameboard = (gameboard, element, isCurrentPlayer) => {
     gameboard.board.forEach((row, y) => {
       row.forEach((cell, x) => {
-        const targetButton = document.createElement('button');
-        targetButton.classList.add('target');
-        targetButton.dataset.x = x;
-        targetButton.dataset.y = y;
-        targetButton.textContent = ' ';
+        const targetElement = document.createElement('div');
+        targetElement.classList.add('target');
+        targetElement.dataset.x = x;
+        targetElement.dataset.y = y;
+        targetElement.textContent = ' ';
 
         if (cell instanceof Ship && !isCurrentPlayer) {
-          targetButton.classList.add('ship');
+          targetElement.classList.add('ship');
         }
-        displayAttackResult(gameboard, [x, y], targetButton);
+        displayAttackResult(gameboard, [x, y], targetElement);
 
-        element.appendChild(targetButton);
+        element.appendChild(targetElement);
       });
     });
   };
@@ -49,6 +49,28 @@ function ScreenController() {
 
     displayGameboard(activePlayerGameboard, gameboardRightElement, true);
     displayGameboard(inactivePlayerGameboard, gameboardLeftElement, false);
+
+    let dragged;
+    const source = document.getElementById('draggable');
+    source.addEventListener('dragstart', (e) => {
+      dragged = e.target;
+      e.target.classList.add('dragging');
+    });
+
+    const targets = document.querySelectorAll('.target');
+
+    targets.forEach((target) => {
+      target.addEventListener('dragover', (e) => {
+        e.preventDefault();
+      });
+
+      target.addEventListener('drop', (e) => {
+        e.preventDefault();
+        if (e.target.classList.contains('target')) {
+          e.target.appendChild(dragged);
+        }
+      });
+    });
   };
 
   function boardClickHandler(e) {

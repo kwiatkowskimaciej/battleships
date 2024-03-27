@@ -24,7 +24,7 @@ function GameController(
   };
 
   const placeShips = () => {
-    gameboardOne.placeShip(new Ship(1), [0, 0], 'horizontal');
+    gameboardOne.placeShip(new Ship(1), [7, 7], 'horizontal');
     gameboardTwo.placeShip(new Ship(4), [0, 0], 'horizontal');
   };
 

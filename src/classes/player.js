@@ -5,7 +5,7 @@ class Player {
   }
 
   attack(coordinates) {
-    if (!this.canAttack(coordinates)) {
+    if (this.gameboard.getAttackResult(coordinates) != null) {
       throw new Error('Position already attacked');
     }
     this.gameboard.receiveAttack(coordinates);
@@ -17,15 +17,9 @@ class Player {
     do {
       x = Math.floor(Math.random() * 10);
       y = Math.floor(Math.random() * 10);
-    } while (!this.canAttack([x, y]));
+    } while (this.gameboard.getAttackResult([x, y]) != null);
 
     this.attack([x, y]);
-  }
-
-  canAttack(coordinates) {
-    return !this.gameboard.missedAttacks.some((array) =>
-      array.every((value, index) => value === coordinates[index])
-    );
   }
 }
 

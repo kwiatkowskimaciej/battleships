@@ -4,7 +4,7 @@ class Gameboard {
   constructor() {
     this.board = this.createBoard(10);
     this.ships = [];
-    this.missedAttacks = [];
+    this.attacks = [];
   }
 
   createBoard(size) {
@@ -52,9 +52,18 @@ class Gameboard {
     const target = this.getShipAt(coordinates);
     if (target instanceof Ship) {
       target.hit();
+      this.attacks.push({ coordinates, result: 'hit' });
     } else {
-      this.missedAttacks.push(coordinates);
+      this.attacks.push({ coordinates, result: 'miss' });
     }
+  }
+
+  getAttackResult(coordinates) {
+    const attack = this.attacks.find((attack) =>
+      attack.coordinates.every((value, index) => value === coordinates[index])
+    );
+
+    return attack ? attack.result : null;
   }
 
   allShipsSunk() {

@@ -7,14 +7,9 @@ function ScreenController() {
   const gameboardTwoElement = document.querySelector('.gameboardTwo');
   const activePlayerElement = document.querySelector('.activePlayer');
 
-  const displayAttackResult = (gameboard, position, button) => {
-    const missedAttack = gameboard.missedAttacks.some((array) =>
-      array.every((value, index) => value === position[index])
-    );
-
-    if (missedAttack) {
-      button.classList.add('miss');
-    }
+  const displayAttackResult = (gameboard, coordinates, button) => {
+    const attackResult = gameboard.getAttackResult(coordinates);
+    if (attackResult) button.classList.add(attackResult);
   };
 
   const displayGameboard = (gameboard, element) => {
@@ -26,8 +21,8 @@ function ScreenController() {
         targetButton.dataset.y = y;
         targetButton.textContent = ' ';
 
-        displayAttackResult(gameboard, [y, x], targetButton);
         if (cell instanceof Ship) targetButton.classList.add('ship');
+        displayAttackResult(gameboard, [x, y], targetButton);
 
         element.appendChild(targetButton);
       });
@@ -50,9 +45,7 @@ function ScreenController() {
     const x = Number(e.target.dataset.x);
     const y = Number(e.target.dataset.y);
 
-    if (!x || !y) return;
-
-    game.playRound([y, x]);
+    game.playRound([x, y]);
     updateScreen();
   }
 

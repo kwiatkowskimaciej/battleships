@@ -10,9 +10,13 @@ body {
 }
 
 .ship {
-  border: 2px solid aqua;
+  background-color: aqua;
 }
 
 .miss {
   background-color: violet;
+}
+
+.hit {
+  background-color: red;
 }

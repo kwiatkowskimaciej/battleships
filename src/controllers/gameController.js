@@ -16,7 +16,6 @@ function GameController(
 
   let activePlayer = playerOne;
   const getActivePlayer = () => activePlayer;
-
   const switchPlayerTurn = () => {
     activePlayer = activePlayer === playerOne ? playerTwo : playerOne;
   };
@@ -31,7 +30,6 @@ function GameController(
   const playRound = (coordinates) => {
     try {
       activePlayer.attack(coordinates);
-      console.log('Attacking at ' + coordinates);
       switchPlayerTurn();
     } catch (error) {
       console.error(error.message);

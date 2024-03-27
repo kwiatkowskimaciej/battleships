@@ -14,6 +14,9 @@ function GameController(
   const playerOne = new Player(playerOneName, gameboardOne);
   const playerTwo = new Player(playerTwoName, gameboardTwo);
 
+  const getPlayerOne = () => playerOne;
+  const getPlayerTwo = () => playerTwo;
+
   let activePlayer = playerOne;
   const getActivePlayer = () => activePlayer;
   const switchPlayerTurn = () => {
@@ -22,7 +25,7 @@ function GameController(
 
   const placeShips = () => {
     gameboardOne.placeShip(new Ship(1), [0, 0], 'horizontal');
-    gameboardTwo.placeShip(new Ship(1), [0, 0], 'horizontal');
+    gameboardTwo.placeShip(new Ship(4), [0, 0], 'horizontal');
   };
 
   placeShips();
@@ -39,6 +42,8 @@ function GameController(
   return {
     getGameboardOne,
     getGameboardTwo,
+    getPlayerOne,
+    getPlayerTwo,
     getActivePlayer,
     playRound,
   };

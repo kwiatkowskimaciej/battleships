@@ -72,4 +72,29 @@ describe('Gameboard', () => {
     gameboard.receiveAttack([2, 0]);
     expect(gameboard.allShipsSunk()).toBe(true);
   });
+
+  test('removes a ship from the ships array', () => {
+    const ship = new Ship(3);
+    gameboard.placeShip(ship, [0, 0], 'horizontal');
+    gameboard.removeShip(ship, [0, 0], 'horizontal');
+    expect(gameboard.ships).not.toContain(ship);
+  });
+
+  test('removes a horizontal ship from the board', () => {
+    const ship = new Ship(3);
+    gameboard.placeShip(ship, [0, 0], 'horizontal');
+    gameboard.removeShip(ship, [0, 0], 'horizontal');
+    expect(gameboard.board[0][0]).toBeNull();
+    expect(gameboard.board[0][1]).toBeNull();
+    expect(gameboard.board[0][2]).toBeNull();
+  });
+
+  test('removes a vertical ship from the board', () => {
+    const ship = new Ship(3);
+    gameboard.placeShip(ship, [0, 0], 'vertical');
+    gameboard.removeShip(ship, [0, 0], 'vertical');
+    expect(gameboard.board[0][0]).toBeNull();
+    expect(gameboard.board[1][0]).toBeNull();
+    expect(gameboard.board[2][0]).toBeNull();
+  });
 });

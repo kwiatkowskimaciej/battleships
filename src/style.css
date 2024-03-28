@@ -3,13 +3,14 @@
   gap: 50px;
 }
 
-.board {
+.gameboard {
   display: grid;
   grid-template-columns: repeat(10, 50px);
   grid-template-rows: repeat(10, 50px);
 }
 
 .target {
+  position: relative;
   border: 1px solid black;
 }
 
@@ -25,8 +26,23 @@
   background-color: red;
 }
 
-#draggable {
-  width: 49px;
-  height: 49px;
+.battleship {
+  height: 50px;
   background-color: coral;
+}
+
+.battleship[data-length='1'] {
+  width: 50px;
+}
+
+.battleship[data-length='2'] {
+  width: 100px;
+}
+
+.battleship[data-length='3'] {
+  width: 150px;
+}
+
+.battleship[data-length='4'] {
+  width: 200px;
 }

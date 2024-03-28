@@ -1,40 +1,13 @@
-import Ship from '../classes/ship';
+import setupGameboard from '../setups/setupGameboard';
+import displayGameboard from '../ui/displayGameboard';
 import GameController from './gameController';
 
 function ScreenController() {
   const game = GameController();
   const gameboardContainer = document.querySelector('.gameboardContainer');
-  const gameboardLeftElement = document.querySelector('.gameboardLeft');
-  const gameboardRightElement = document.querySelector('.gameboardRight');
   const activePlayerElement = document.querySelector('.activePlayer');
 
-  const displayAttackResult = (gameboard, coordinates, element) => {
-    const attackResult = gameboard.getAttackResult(coordinates);
-    if (attackResult) element.classList.add(attackResult);
-  };
-
-  const displayGameboard = (gameboard, element, isCurrentPlayer) => {
-    gameboard.board.forEach((row, y) => {
-      row.forEach((cell, x) => {
-        const targetElement = document.createElement('div');
-        targetElement.classList.add('target');
-        targetElement.dataset.x = x;
-        targetElement.dataset.y = y;
-        targetElement.textContent = ' ';
-
-        if (cell instanceof Ship && !isCurrentPlayer) {
-          targetElement.classList.add('ship');
-        }
-        displayAttackResult(gameboard, [x, y], targetElement);
-
-        element.appendChild(targetElement);
-      });
-    });
-  };
-
   const updateScreen = () => {
-    gameboardLeftElement.innerHTML = '';
-    gameboardRightElement.innerHTML = '';
     activePlayerElement.innerHTML = game.getActivePlayer().name;
 
     const gameboardOne = game.getGameboardOne();
@@ -47,30 +20,8 @@ function ScreenController() {
     const inactivePlayerGameboard =
       activePlayer === game.getPlayerOne() ? gameboardTwo : gameboardOne;
 
-    displayGameboard(activePlayerGameboard, gameboardRightElement, true);
-    displayGameboard(inactivePlayerGameboard, gameboardLeftElement, false);
-
-    let dragged;
-    const source = document.getElementById('draggable');
-    source.addEventListener('dragstart', (e) => {
-      dragged = e.target;
-      e.target.classList.add('dragging');
-    });
-
-    const targets = document.querySelectorAll('.target');
-
-    targets.forEach((target) => {
-      target.addEventListener('dragover', (e) => {
-        e.preventDefault();
-      });
-
-      target.addEventListener('drop', (e) => {
-        e.preventDefault();
-        if (e.target.classList.contains('target')) {
-          e.target.appendChild(dragged);
-        }
-      });
-    });
+    displayGameboard(activePlayerGameboard);
+    displayGameboard(inactivePlayerGameboard);
   };
 
   function boardClickHandler(e) {
@@ -83,10 +34,14 @@ function ScreenController() {
     updateScreen();
   }
 
-  gameboardLeftElement.addEventListener('click', boardClickHandler);
-  gameboardRightElement.addEventListener('click', boardClickHandler);
+  const startGame = async () => {
+    await setupGameboard(game.getGameboardTwo());
+    await setupGameboard(game.getGameboardOne());
 
-  updateScreen();
+    updateScreen();
+  };
+
+  startGame();
 }
 
 export default ScreenController;

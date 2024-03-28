@@ -1,10 +1,9 @@
 import Player from '../classes/player';
 import Gameboard from '../classes/gameboard';
-import Ship from '../classes/ship';
 
 function GameController(
   playerOneName = 'Player One',
-  playerTwoName = 'PlayerTwo'
+  playerTwoName = 'Player Two'
 ) {
   const gameboardOne = new Gameboard();
   const gameboardTwo = new Gameboard();
@@ -22,13 +21,6 @@ function GameController(
   const switchPlayerTurn = () => {
     activePlayer = activePlayer === playerOne ? playerTwo : playerOne;
   };
-
-  const placeShips = () => {
-    gameboardOne.placeShip(new Ship(1), [7, 7], 'horizontal');
-    gameboardTwo.placeShip(new Ship(4), [0, 0], 'horizontal');
-  };
-
-  placeShips();
 
   const playRound = (coordinates) => {
     try {

@@ -16,7 +16,7 @@ function setupGameboard(gameboard) {
   const observer = new MutationObserver(() => {
     const battleships = harborElement.querySelectorAll('.battleship');
     if (battleships.length === 0) {
-      button.disabled = false;
+      confirmButton.disabled = false;
     }
   });
 

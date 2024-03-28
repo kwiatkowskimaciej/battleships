@@ -48,6 +48,24 @@ class Gameboard {
     }
   }
 
+  removeShip(ship, coordinates, rotation) {
+    const [x, y] = coordinates;
+
+    this.ships = this.ships.filter((item) => item !== ship);
+
+    if (ship.length > 1 && rotation === 'horizontal') {
+      for (let i = 0; i < ship.length; i++) {
+        this.board[y][x + i] = null;
+      }
+    } else if (ship.length > 1 && rotation === 'vertical') {
+      for (let i = 0; i < ship.length; i++) {
+        this.board[y + i][x] = null;
+      }
+    } else {
+      this.board[y][x] = null;
+    }
+  }
+
   receiveAttack(coordinates) {
     const target = this.getShipAt(coordinates);
     if (target instanceof Ship) {

@@ -8,6 +8,7 @@ function ScreenController() {
   const activePlayerElement = document.querySelector('.activePlayer');
 
   const updateScreen = () => {
+    gameboardContainer.innerHTML = '';
     activePlayerElement.innerHTML = game.getActivePlayer().name;
 
     const gameboardOne = game.getGameboardOne();
@@ -20,8 +21,8 @@ function ScreenController() {
     const inactivePlayerGameboard =
       activePlayer === game.getPlayerOne() ? gameboardTwo : gameboardOne;
 
-    displayGameboard(activePlayerGameboard);
     displayGameboard(inactivePlayerGameboard);
+    displayGameboard(activePlayerGameboard);
   };
 
   function boardClickHandler(e) {
@@ -29,9 +30,20 @@ function ScreenController() {
     const y = Number(e.target.dataset.y);
 
     game.playRound([x, y]);
-
-    confirm(`Pass device to the next player`);
     updateScreen();
+
+    if (game.getActivePlayer().gameboard.allShipsSunk()) {
+      alert('Game over! ' + game.getActivePlayer().name + ' wins!');
+      return;
+    }
+
+    Promise.resolve().then(() => {
+      const nextPlayer = confirm(`Pass device to the next player`);
+      if (nextPlayer) {
+        game.switchPlayerTurn();
+        updateScreen();
+      }
+    });
   }
 
   const startGame = async () => {
@@ -39,6 +51,8 @@ function ScreenController() {
     await setupGameboard(game.getGameboardOne());
 
     updateScreen();
+
+    gameboardContainer.addEventListener('click', boardClickHandler);
   };
 
   startGame();

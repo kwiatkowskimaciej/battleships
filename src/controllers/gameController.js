@@ -25,7 +25,6 @@ function GameController(
   const playRound = (coordinates) => {
     try {
       activePlayer.attack(coordinates);
-      switchPlayerTurn();
     } catch (error) {
       console.error(error.message);
     }
@@ -38,6 +37,7 @@ function GameController(
     getPlayerTwo,
     getActivePlayer,
     playRound,
+    switchPlayerTurn,
   };
 }
 

@@ -1,6 +1,6 @@
 import Ship from '../classes/ship';
 
-function displayGameboard(gameboard) {
+function displayGameboard(gameboard, showShips = false) {
   const gameboardContainer = document.querySelector('.gameboardContainer');
   const gameboardElement = document.createElement('div');
   gameboardElement.classList.add('gameboard');
@@ -13,7 +13,7 @@ function displayGameboard(gameboard) {
       targetElement.dataset.y = y;
       targetElement.textContent = ' ';
 
-      if (cell instanceof Ship) {
+      if (cell instanceof Ship && showShips) {
         targetElement.classList.add('ship');
       }
       displayAttackResult(gameboard, [x, y], targetElement);

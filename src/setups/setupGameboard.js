@@ -1,17 +1,21 @@
 import Ship from '../classes/ship';
 import displayGameboard from '../ui/displayGameboard';
+import displayHarbor from '../ui/displayHarbor';
 
 function setupGameboard(gameboard) {
   displayGameboard(gameboard);
+  displayHarbor();
   generateShips();
 
   const gameboardElement = document.querySelector('.gameboard');
-  const harborElement = document.querySelector('.harbor');
+  const harborElement = document.querySelector('.harborShipyard');
+  const gameboardContainer = document.querySelector('.gameboardContainer');
 
   const confirmButton = document.createElement('button');
+  confirmButton.classList.add('confirmButton');
   confirmButton.textContent = 'Confirm placement';
   confirmButton.disabled = true;
-  document.body.appendChild(confirmButton);
+  gameboardContainer.appendChild(confirmButton);
 
   const observer = new MutationObserver(() => {
     const battleships = harborElement.querySelectorAll('.battleship');
@@ -31,7 +35,15 @@ function setupGameboard(gameboard) {
       battleship.addEventListener('dragstart', (e) => {
         if (e.target.classList.contains('battleship')) {
           ship = e.target;
-          originalLocation = null;
+          const harborElement = e.target.closest('.harbor');
+          if (harborElement) {
+            originalLocation = null;
+          } else {
+            const x = parseInt(ship.parentNode.dataset.x);
+            const y = parseInt(ship.parentNode.dataset.y);
+            originalLocation = [x, y];
+            console.log(originalLocation);
+          }
         }
       })
     );
@@ -53,7 +65,6 @@ function setupGameboard(gameboard) {
           const newShip = new Ship(shipLength);
           gameboard.placeShip(newShip, [x, y], 'horizontal');
           e.target.appendChild(ship);
-          originalLocation = [x, y];
         } catch (error) {
           console.error(error);
         }
@@ -87,18 +98,22 @@ function setupGameboard(gameboard) {
 }
 
 function generateShips() {
-  const harborElement = document.querySelector('.harbor');
-  harborElement.innerHTML = '';
+  const harborShipyard = document.querySelector('.harborShipyard');
+  // harborElement.innerHTML = '';
 
-  // const ships = [4, 3, 3, 2, 2, 2, 1, 1, 1, 1];
-  const ships = [4, 1];
+  const ships = [4, 3, 3, 2, 2, 2, 1, 1, 1, 1];
+  // const ships = [4, 1];
   ships.forEach((length) => {
     const ship = document.createElement('div');
     ship.classList.add('battleship');
     ship.dataset.length = length;
     ship.draggable = true;
-    ship.textContent = length;
-    harborElement.appendChild(ship);
+    harborShipyard.appendChild(ship);
+
+    for (let i = 0; i < length; i++) {
+      const targetPoint = document.createElement('div');
+      ship.appendChild(targetPoint);
+    }
   });
 }
 

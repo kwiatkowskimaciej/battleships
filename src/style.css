@@ -1,48 +1,254 @@
-.gameboardContainer {
+:root {
+  --gameboard-size: 528px;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Chakra Petch', sans-serif;
+}
+
+header {
   display: flex;
-  gap: 50px;
+  justify-content: center;
+  align-items: center;
+
+  height: 64px;
+  padding: 16px;
+  border-bottom: 1px solid #dcdfe5;
+
+  background-color: #f3f3f3;
+}
+
+h1 {
+  color: #353839;
+}
+
+.fleet {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  padding: 8px;
+  border-radius: 4px;
+}
+
+.fleetDescription {
+  font-weight: 600;
+  color: white;
+  letter-spacing: 1px;
+}
+
+.fleet:nth-of-type(1) {
+  background-color: #fc0044;
+}
+
+.fleet:nth-of-type(2) {
+  background-color: #5e6984;
+}
+
+.container {
+  display: flex;
+  justify-content: center;
+
+  width: 100%;
+}
+
+.gameboardContainer {
+  display: grid;
+  grid-template-columns: repeat(2, var(--gameboard-size));
+  gap: 24px;
+
+  padding: 24px;
 }
 
 .gameboard {
   display: grid;
-  grid-template-columns: repeat(10, 50px);
-  grid-template-rows: repeat(10, 50px);
+  grid-template-columns: repeat(10, 1fr);
+  grid-template-rows: repeat(10, 1fr);
+  gap: 4px;
+
+  width: var(--gameboard-size);
+  height: var(--gameboard-size);
+}
+
+.confirmButton {
+  height: 40px;
+  border: none;
+  border-radius: 4px;
+
+  background-color: #0a49e9;
+
+  color: white;
+  font-size: 16px;
+  font-weight: bold;
+  font-family: 'Chakra Petch', sans-serif;
+  opacity: 1;
+
+  transform: opacity 0.25s;
+}
+
+.confirmButton:disabled {
+  opacity: 0.25;
 }
 
 .target {
   position: relative;
-  border: 1px solid black;
+
+  border-radius: 4px;
+
+  background-color: #d9f1ff;
 }
 
 .ship {
-  background-color: aqua;
+  background-color: #c7c8d7;
 }
 
-.miss {
-  background-color: violet;
+.ship::after,
+.miss::after,
+.hit::after {
+  content: '';
+  position: absolute;
+  top: calc(50% - (var(--gameboard-size) - (9 * 4px)) / 10 / 2.5 / 2);
+  left: calc(50% - (var(--gameboard-size) - (9 * 4px)) / 10 / 2.5 / 2);
+  width: calc((var(--gameboard-size) - (9 * 4px)) / 10 / 2.5);
+  height: calc((var(--gameboard-size) - (9 * 4px)) / 10 / 2.5);
+  border-radius: 50%;
 }
 
-.hit {
-  background-color: red;
+.ship::after {
+  background-color: #aeafbc;
+}
+
+.miss::after {
+  background-color: #52b9ff;
+}
+
+.hit::after {
+  background-color: #fc0044;
+}
+
+.harbor {
+  display: flex;
+  gap: 8px;
+  align-content: flex-start;
+}
+
+.harborHeader,
+.graveyard {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+
+  color: #717c96;
+  font-weight: bold;
+}
+
+.graveyard {
+  align-items: flex-start;
+}
+
+.harborHeader span,
+.graveyardHeader span {
+  display: inline-block;
+
+  width: 16px;
+  line-height: 16px;
+  writing-mode: vertical-rl;
+
+  transform-origin: center;
+  transform: rotate(180deg);
+}
+
+.harborShipyard {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.graveyardShips {
+  display: flex;
+  align-content: flex-start;
+  flex-wrap: wrap;
+  gap: 8px;
+
+  color: #353839;
+}
+
+.graveyardShips div {
+  position: relative;
+}
+
+.graveyardShips div[data-is-sunk='true']::before {
+  content: '';
+  border-bottom: 2px solid #353839;
+  width: 100%;
+  position: absolute;
+  right: 0;
+  top: 50%;
+}
+
+.target .battleship {
+  position: absolute;
+  z-index: 1;
 }
 
 .battleship {
-  height: 50px;
-  background-color: coral;
+  display: grid;
+  align-items: center;
+  justify-items: center;
+  gap: 4px;
+
+  height: calc((var(--gameboard-size) - (9 * 4px)) / 10);
+  border-radius: 4px;
+
+  background-color: #c7c8d7;
+}
+
+.battleship div {
+  width: calc((var(--gameboard-size) - (9 * 4px)) / 10 / 2.5);
+  height: calc((var(--gameboard-size) - (9 * 4px)) / 10 / 2.5);
+  border-radius: 50%;
+
+  background-color: #aeafbc;
 }
 
 .battleship[data-length='1'] {
-  width: 50px;
+  grid-template-columns: repeat(1, 1fr);
+
+  width: calc((var(--gameboard-size) - (9 * 4px)) / 10);
+  /* border-radius: 4px 75% 75% 4px / 4px 50% 50% 4px; */
 }
 
 .battleship[data-length='2'] {
-  width: 100px;
+  grid-template-columns: repeat(2, 1fr);
+
+  width: calc((var(--gameboard-size) - (9 * 4px)) / 10 * 2 + 4px);
+  /* border-radius: 4px 50% 50% 4px / 4px 50% 50% 4px; */
 }
 
 .battleship[data-length='3'] {
-  width: 150px;
+  grid-template-columns: repeat(3, 1fr);
+
+  width: calc((var(--gameboard-size) - (9 * 4px)) / 10 * 3 + 8px);
+  /* border-radius: 4px calc(100% / 3) calc(100% / 3) 4px / 4px 50% 50% 4px; */
 }
 
 .battleship[data-length='4'] {
-  width: 200px;
+  grid-template-columns: repeat(4, 1fr);
+
+  width: calc((var(--gameboard-size) - (9 * 4px)) / 10 * 4 + 12px);
+  /* border-radius: 4px calc(100% / 4) calc(100% / 4) 4px / 4px 50% 50% 4px; */
+}
+
+.playerOneBackground {
+  background-color: #fc0044;
+}
+
+.playerTwoBackground {
+  background-color: #5e6984;
 }

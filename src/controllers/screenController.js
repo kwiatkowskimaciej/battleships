@@ -1,15 +1,18 @@
 import setupGameboard from '../setups/setupGameboard';
+import displayFleet from '../ui/displayFleet';
 import displayGameboard from '../ui/displayGameboard';
+import displayGraveyard from '../ui/displayGraveyard';
 import GameController from './gameController';
 
 function ScreenController() {
   const game = GameController();
   const gameboardContainer = document.querySelector('.gameboardContainer');
-  const activePlayerElement = document.querySelector('.activePlayer');
 
   const updateScreen = () => {
     gameboardContainer.innerHTML = '';
-    activePlayerElement.innerHTML = game.getActivePlayer().name;
+
+    displayFleet('Your Fleet');
+    displayFleet("Opponent's fleet");
 
     const gameboardOne = game.getGameboardOne();
     const gameboardTwo = game.getGameboardTwo();
@@ -21,8 +24,11 @@ function ScreenController() {
     const inactivePlayerGameboard =
       activePlayer === game.getPlayerOne() ? gameboardTwo : gameboardOne;
 
-    displayGameboard(inactivePlayerGameboard);
-    displayGameboard(activePlayerGameboard);
+    displayGameboard(inactivePlayerGameboard, true);
+    displayGameboard(activePlayerGameboard, false);
+
+    displayGraveyard(inactivePlayerGameboard);
+    displayGraveyard(activePlayerGameboard);
   };
 
   function boardClickHandler(e) {
@@ -37,18 +43,21 @@ function ScreenController() {
       return;
     }
 
-    Promise.resolve().then(() => {
+    setTimeout(() => {
       const nextPlayer = confirm(`Pass device to the next player`);
       if (nextPlayer) {
         game.switchPlayerTurn();
         updateScreen();
       }
-    });
+    }, 100);
   }
 
   const startGame = async () => {
     await setupGameboard(game.getGameboardTwo());
+    gameboardContainer.innerHTML = '';
+
     await setupGameboard(game.getGameboardOne());
+    gameboardContainer.innerHTML = '';
 
     updateScreen();
 

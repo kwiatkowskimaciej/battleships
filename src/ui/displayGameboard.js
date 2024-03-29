@@ -5,7 +5,24 @@ function displayGameboard(gameboard, showShips = false) {
   const gameboardElement = document.createElement('div');
   gameboardElement.classList.add('gameboard');
 
+  const letters = 'ABCDEFGHIJ'.split('');
+
+  const emptyCell = document.createElement('div');
+  gameboardElement.appendChild(emptyCell);
+
+  letters.forEach((letter) => {
+    const labelElement = document.createElement('div');
+    labelElement.classList.add('label');
+    labelElement.textContent = letter;
+    gameboardElement.appendChild(labelElement);
+  });
+
   gameboard.board.forEach((row, y) => {
+    const labelElement = document.createElement('div');
+    labelElement.classList.add('label');
+    labelElement.textContent = y + 1;
+    gameboardElement.appendChild(labelElement);
+
     row.forEach((cell, x) => {
       const targetElement = document.createElement('div');
       targetElement.classList.add('target');

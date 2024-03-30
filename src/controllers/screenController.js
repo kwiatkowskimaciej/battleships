@@ -34,7 +34,15 @@ function ScreenController() {
     displayGraveyard(activePlayerGameboard);
   };
 
+  let isPlayerTurnOver = false;
+
   async function boardClickHandler(e) {
+    if (isPlayerTurnOver) {
+      return;
+    }
+
+    isPlayerTurnOver = true;
+
     const x = Number(e.target.dataset.x);
     const y = Number(e.target.dataset.y);
 
@@ -58,6 +66,8 @@ function ScreenController() {
     game.switchPlayerTurn();
     updateScreen();
     await displayText(`${game.getActivePlayer().name}'s turn...`);
+
+    isPlayerTurnOver = false;
   }
 
   const startGame = async () => {

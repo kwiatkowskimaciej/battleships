@@ -101,8 +101,8 @@ function generateShips() {
   const harborShipyard = document.querySelector('.harborShipyard');
   // harborElement.innerHTML = '';
 
-  // const ships = [4, 3, 3, 2, 2, 2, 1, 1, 1, 1];
-  const ships = [4, 1];
+  const ships = [4, 3, 3, 2, 2, 2, 1, 1, 1, 1];
+  // const ships = [4, 1];
   ships.forEach((length) => {
     const ship = document.createElement('div');
     ship.classList.add('battleship');
